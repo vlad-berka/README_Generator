@@ -1,0 +1,22 @@
+{
+  "name": "readme_generator",
+  "version": "1.0.0",
+  "description": "UW HW Assignment #9, javascript assignment + node.js, creates a README from console commandline",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vlad-berka/README_Generator.git"
+  },
+  "author": "Vladimir Berka",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vlad-berka/README_Generator/issues"
+  },
+  "homepage": "https://github.com/vlad-berka/README_Generator#readme",
+  "dependencies": {
+    "inquirer": "^8.2.2"
+  }
+}
