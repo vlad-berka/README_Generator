@@ -1,15 +1,18 @@
 var task_list = [];
-var index_count = 0;
 var README_String ="";
 var global_username ='';
 
+// TODO: Include packages needed for this application
 const inquirer = require('inquirer');
 const fs = require('fs');
+
+// TODO: Create an array of questions for user input
+// The function 'prompt_TOC' below allows for the user to check which sections they would like to include and turns them into an array called "task_list";
 
 // ---------------------------------------------------------PROMPT TABLE OF CONTENTS
 function prompt_TOC () {
     inquirer
-        .prompt([
+    .prompt([
             {
                 type: 'input',
                 message: '\nWelcome to the README AutoGenerator. What is your full name?\n',
@@ -25,13 +28,12 @@ function prompt_TOC () {
                 message: '\nWhich sections you would like to include in the README file?\n',
                 name: 'listOfTasks',
                 pageSize: 8,
-                choices: ['Description', 'Assignment Scope', 'Installation Instructions', 'Usage', 'User Story', "Acceptance Criteria", 'Contributors', 'License'],
+                choices: ['Description', 'Assignment Scope', 'Installation Instructions', 'Usage', 'User Story', "Acceptance Criteria", 'Contributors', 'Tests', 'License'],
             }
         ])
         .then((input_data) => {
             task_list = input_data.listOfTasks;
             fs.writeFileSync('README.md', generate_README(input_data));
-            prompt_Description();
         });
 }
 // ---------------------------------------------------------------------------------
@@ -69,6 +71,14 @@ input_data.listOfTasks.forEach(element => {
         README_String += `
 - [Acceptance Criteria](#accCrit)`;
         break;
+    case "Contributors":
+        README_String += `
+- [Contributors](#contrib)`;
+            break;
+    case "Tests":
+        README_String += `
+- [Test](#test)`;
+            break;
     case "License":
         README_String += `
 - [License](#lisc)`;
@@ -96,7 +106,6 @@ function prompt_Description () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_Description(input_data));
-            prompt_Scope();
         });
 }
 // ---------------------------------------------------------------------------------
@@ -124,7 +133,6 @@ function prompt_Scope () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_Scope(input_data));
-            prompt_Installation();
         });
 }
 // ---------------------------------------------------------------------------------
@@ -152,7 +160,6 @@ function prompt_Installation () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_Installation(input_data));
-            prompt_Usage();
         });
 }
 // ---------------------------------------------------------------------------------
@@ -180,7 +187,6 @@ function prompt_Usage () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_Usage(input_data));
-            prompt_UserStory();
         });
 }
 // ---------------------------------------------------------------------------------
@@ -208,7 +214,6 @@ function prompt_UserStory () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_UserStory(input_data));
-            prompt_AcceptCrit();
         });
 }
 // ---------------------------------------------------------------------------------
@@ -236,7 +241,6 @@ function prompt_AcceptCrit () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_AcceptCrit(input_data));
-            prompt_Contributors();
         });
 }
 // ---------------------------------------------------------------------------------
@@ -264,7 +268,6 @@ function prompt_Contributors () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_Contributors(input_data));
-            prompt_License();
         });
 }
 // ---------------------------------------------------------------------------------
@@ -274,6 +277,33 @@ const append_Contributors = (input_data) => {
     README_String = `
 ## Project Contributors
 ${input_data.contributors}    
+
+`;
+return README_String;
+}
+// ---------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------PROMPT TESTS
+function prompt_Tests () {
+    inquirer
+        .prompt([
+        {
+            type: 'input',
+            message: '\nWhat is the testing information for your project?\n',
+            name: 'contributors',
+        },
+        ])
+        .then((input_data) => {
+            fs.appendFileSync('README.md', append_Tests(input_data));
+        });
+}
+// ---------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------APPEND TESTS
+const append_Tests = (input_data) => {
+    README_String = `
+## Project Testing Information
+${input_data.tests}    
 
 `;
 return README_String;
@@ -294,7 +324,6 @@ function prompt_License () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_License(input_data));
-            conclusion();
         });
 }  
 // --------------------------------------------------------------------------------- 
@@ -372,5 +401,43 @@ function conclusion() {
     console.log("\n This concludes the inputs for the auto-generated README. Please see your final file at ./README.md\n")
 }
 
-// This basically starts the program by prompting for the table of contents
-prompt_TOC ();
+// TODO: Create a function to initialize app
+function init() {
+    prompt_TOC();
+    //Iterates over the global array 'task_list' created in prompt_TOC and runs each appropriate prompt function / write function
+    task_list.forEach(element => {
+        switch (element) {
+        case "Description":
+            prompt_Description();
+            break;
+        case "Assignment Scope":
+            prompt_Scope();
+            break;
+        case "Installation Instructions":
+            prompt_Installation();
+            break; 
+        case "Usage":
+            prompt_Usage();
+            break;
+        case "User Story":
+            prompt_UserStory
+            break;
+        case "Acceptance Criteria":
+            prompt_AcceptCrit();
+            break;
+        case "Contributors":
+            prompt_Contributors();
+            break;
+        case "Tests":
+            prompt_Tests();
+            break;
+        case "License":
+            prompt_License();
+            break;
+        }
+    });
+    conclusion();
+}
+
+// Function call to initialize app
+init();
