@@ -1,63 +1,46 @@
-# Test Project
-(Auto-generated README, written by Vladimir B)
+# Node.js: Professional README Generator
+(Auto-generated README, written by Vladimir Berka)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Table of Contents
 - [Description](#descr)
 - [Assignment Scope](#scope)
 - [Installation Instructions](#inst)
 - [Usage](#usage)
-- [User Story](#userStory)
-- [Acceptance Criteria](#accCrit)
+- [Contributors](#contrib)
+- [Test](#test)
+- [Questions](#questions)
         
 
-## Project Description
-asdfasdf    
+## Project Description <a id = "descr"></a>
+This is a homework assignment for the UW full stack coding bootcamp. Technologies used are primarily javascripe and Node.js    
 
 
-## Project Scope
-asdf    
+## Project Scope <a id = "scope"></a>
+Scope is limited to creating an automatically generated professional README file through the node console     
 
 
-## Project Installation Instructions
-asdf    
+## Project Installation Instructions <a id = "inst"></a>
+See the attached json package for installation instructions    
 
 
-## Project Usage Instructions
-asdf    
+## Project Usage Instructions <a id = "usage"></a>
+The project is for personal use, to create README files for personal projects and future UW homeworks    
 
 
-## General Project User Story
-asdf    
+## Project Contributors <a id = "contrib"></a>
+None    
 
 
-## General Project Acceptance Critieria
-asdf    
+## Project Testing Information <a id = "test"></a>
+None    
 
 
-## Project Contributors
-asdef    
+## Questions <a id = "questions"></a>
 
+I can be reached for additional questions at my email: vlad.m.berka@gmail.com
+and usually respond within 48 hours    
 
-## License
-MIT License
+You can also view my additional repositories at [GitHub Pages Link: https://github.com/vlad-berka](https://github.com/vlad-berka)
 
-Copyright (c) [2022] [Vladimir B]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-        

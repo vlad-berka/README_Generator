@@ -1,6 +1,9 @@
 var task_list = [];
+var task_list_index =0;
 var README_String ="";
 var global_username ='';
+var License_choice = '';
+var badge_link = '';
 
 // TODO: Include packages needed for this application
 const inquirer = require('inquirer');
@@ -17,31 +20,55 @@ function prompt_TOC () {
                 type: 'input',
                 message: '\nWelcome to the README AutoGenerator. What is your full name?\n',
                 name: 'user_name',
+                default: 'Vladimir B'
             },
             {
                 type: 'input',
                 message: '\nWhat is the name of your project?\n',
                 name: 'proj_name',
+                default: 'Node.js: Professional README Generator'
             },
             {
                 type: 'checkbox',
                 message: '\nWhich sections you would like to include in the README file?\n',
                 name: 'listOfTasks',
-                pageSize: 8,
-                choices: ['Description', 'Assignment Scope', 'Installation Instructions', 'Usage', 'User Story', "Acceptance Criteria", 'Contributors', 'Tests', 'License'],
+                pageSize: 15,
+                choices: ['Description', 'Assignment Scope', 'Installation Instructions', 'Usage', 'Contributors', 'Tests', 'Questions'],
+            },
+            {
+                type: 'list',
+                message: '\nWhich of the following licenses do you wish to use?\n',
+                name: 'licenses',
+                choices: ["MIT", "Unlicense"],
+                default: "MIT"
             }
         ])
         .then((input_data) => {
+            License_choice = input_data.licenses;
+            console.log(License_choice);
+            switch(License_choice) {
+                case "MIT":
+                    badge_link = badge_link = '[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)';
+                    break;
+                case "Unlicense":
+                    badge_link = '[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)';
+                    break;
+            }
+            fs.writeFileSync('README.md', write_README(input_data));
             task_list = input_data.listOfTasks;
-            fs.writeFileSync('README.md', generate_README(input_data));
-        });
-}
+            console.log(task_list);
+            get_Next(task_list[0]);
+            })
+        };
+
 // ---------------------------------------------------------------------------------
 
 // ----------------------------------------WRITE TABLE OF CONTENTS / GENERATE README
-const generate_README = (input_data) => {
+const write_README = (input_data) => {
     README_String=`# ${input_data.proj_name}
 (Auto-generated README, written by ${input_data.user_name})
+
+${badge_link}
 
 ## Table of Contents`;
 
@@ -79,6 +106,10 @@ input_data.listOfTasks.forEach(element => {
         README_String += `
 - [Test](#test)`;
             break;
+    case "Questions":
+        README_String += `
+- [Questions](#questions)`;
+        break;
     case "License":
         README_String += `
 - [License](#lisc)`;
@@ -106,6 +137,7 @@ function prompt_Description () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_Description(input_data));
+            get_Next(task_list[task_list_index]);
         });
 }
 // ---------------------------------------------------------------------------------
@@ -113,7 +145,7 @@ function prompt_Description () {
 // ---------------------------------------------------------------APPEND DESCRIPTION
 const append_Description = (input_data) => {
     README_String = `
-## Project Description
+## Project Description <a id = "descr"></a>
 ${input_data.description}    
 
 `;
@@ -133,6 +165,7 @@ function prompt_Scope () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_Scope(input_data));
+            get_Next(task_list[task_list_index]);
         });
 }
 // ---------------------------------------------------------------------------------
@@ -140,7 +173,7 @@ function prompt_Scope () {
 // ---------------------------------------------------------------------APPEND SCOPE
 const append_Scope = (input_data) => {
     README_String = `
-## Project Scope
+## Project Scope <a id = "scope"></a>
 ${input_data.scope}    
 
 `;
@@ -160,6 +193,7 @@ function prompt_Installation () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_Installation(input_data));
+            get_Next(task_list[task_list_index]);
         });
 }
 // ---------------------------------------------------------------------------------
@@ -167,7 +201,7 @@ function prompt_Installation () {
 // --------------------------------------------------------------APPEND INSTALLATION
 const append_Installation = (input_data) => {
     README_String = `
-## Project Installation Instructions
+## Project Installation Instructions <a id = "inst"></a>
 ${input_data.installation}    
 
 `;
@@ -187,6 +221,7 @@ function prompt_Usage () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_Usage(input_data));
+            get_Next(task_list[task_list_index]);
         });
 }
 // ---------------------------------------------------------------------------------
@@ -194,7 +229,7 @@ function prompt_Usage () {
 // ---------------------------------------------------------------------APPEND USAGE
 const append_Usage = (input_data) => {
     README_String = `
-## Project Usage Instructions
+## Project Usage Instructions <a id = "usage"></a>
 ${input_data.usage}    
 
 `;
@@ -214,6 +249,7 @@ function prompt_UserStory () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_UserStory(input_data));
+            get_Next(task_list[task_list_index]);
         });
 }
 // ---------------------------------------------------------------------------------
@@ -221,7 +257,7 @@ function prompt_UserStory () {
 // ----------------------------------------------------------------APPEND USER STORY
 const append_UserStory = (input_data) => {
     README_String = `
-## General Project User Story
+## General Project User Story <a id = "userStory"></a>
 ${input_data.user_story}    
 
 `;
@@ -241,6 +277,7 @@ function prompt_AcceptCrit () {
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_AcceptCrit(input_data));
+            get_Next(task_list[task_list_index]);
         });
 }
 // ---------------------------------------------------------------------------------
@@ -248,7 +285,7 @@ function prompt_AcceptCrit () {
 // -------------------------------------------------------APPEND ACCEPTANCE CRITERIA
 const append_AcceptCrit = (input_data) => {
     README_String = `
-## General Project Acceptance Critieria
+## General Project Acceptance Critieria <a id = "accCrit"></a>
 ${input_data.acceptance_criteria}    
 
 `;
@@ -264,10 +301,12 @@ function prompt_Contributors () {
             type: 'input',
             message: '\nWhat are the names of your contributors?\n',
             name: 'contributors',
+            default: 'None'
         },
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_Contributors(input_data));
+            get_Next(task_list[task_list_index]);
         });
 }
 // ---------------------------------------------------------------------------------
@@ -275,7 +314,7 @@ function prompt_Contributors () {
 // --------------------------------------------------------------APPEND CONTRIBUTORS
 const append_Contributors = (input_data) => {
     README_String = `
-## Project Contributors
+## Project Contributors <a id = "contrib"></a>
 ${input_data.contributors}    
 
 `;
@@ -290,11 +329,13 @@ function prompt_Tests () {
         {
             type: 'input',
             message: '\nWhat is the testing information for your project?\n',
-            name: 'contributors',
+            name: 'tests',
+            default: 'None',
         },
         ])
         .then((input_data) => {
             fs.appendFileSync('README.md', append_Tests(input_data));
+            get_Next(task_list[task_list_index]);
         });
 }
 // ---------------------------------------------------------------------------------
@@ -302,8 +343,49 @@ function prompt_Tests () {
 // ---------------------------------------------------------------------APPEND TESTS
 const append_Tests = (input_data) => {
     README_String = `
-## Project Testing Information
+## Project Testing Information <a id = "test"></a>
 ${input_data.tests}    
+
+`;
+return README_String;
+}
+// ---------------------------------------------------------------------------------
+
+
+
+// -----------------------------------------------------------------PROMPT QUESTIONS
+function prompt_Questions () {
+    inquirer
+        .prompt([
+        {
+            type: 'input',
+            message: '\nWhat is your email address?\n',
+            name: 'user_email',
+            default: 'vlad.m.berka@gmail.com'
+        },
+        {
+            type: 'input',
+            message: '\nWhat is your github username?\n',
+            name: 'user_github',
+            default: 'vlad-berka',
+        },
+        ])
+        .then((input_data) => {
+            fs.appendFileSync('README.md', append_Questions(input_data));
+            get_Next(task_list[task_list_index]);
+        });
+}
+// ---------------------------------------------------------------------------------
+
+// -----------------------------------------------------------------APPEND QUESTIONS
+const append_Questions = (input_data) => {
+    README_String = `
+## Questions <a id = "questions"></a>
+
+I can be reached for additional questions at my email: ${input_data.user_email}
+and usually respond within 48 hours    
+
+You can also view my additional repositories at [GitHub Pages Link: https://github.com/${input_data.user_github}](https://github.com/${input_data.user_github})
 
 `;
 return README_String;
@@ -323,17 +405,26 @@ function prompt_License () {
         }
         ])
         .then((input_data) => {
-            fs.appendFileSync('README.md', append_License(input_data));
+            License_choice = input_data.licenses;
+            console.log(License_choice);
+            switch(License_choice) {
+                case "MIT":
+                    badge_link = badge_link = '[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)';
+                    break;
+                case "Unlicense":
+                    badge_link = '[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)';
+                    break;
+            }
         });
 }  
 // --------------------------------------------------------------------------------- 
 
 // -------------------------------------------------------------------APPEND LICENSE
-function append_License(input_data) {
-switch (input_data.licenses){
+function append_License(License_choice) {
+switch (License_choice){
     case "MIT":
 README_String = `
-## License
+## License <a id = "lisc"></a>
 MIT License
 
 Copyright (c) [2022] [${global_username}]
@@ -398,15 +489,14 @@ return README_String;
 // ---------------------------------------------------------------------------------
 
 function conclusion() {
+    fs.appendFileSync('README.md', append_License(License_choice));
     console.log("\n This concludes the inputs for the auto-generated README. Please see your final file at ./README.md\n")
 }
 
 // TODO: Create a function to initialize app
-function init() {
-    prompt_TOC();
+function get_Next(element) {
     //Iterates over the global array 'task_list' created in prompt_TOC and runs each appropriate prompt function / write function
-    task_list.forEach(element => {
-        switch (element) {
+    switch (element) {
         case "Description":
             prompt_Description();
             break;
@@ -420,7 +510,7 @@ function init() {
             prompt_Usage();
             break;
         case "User Story":
-            prompt_UserStory
+            prompt_UserStory();
             break;
         case "Acceptance Criteria":
             prompt_AcceptCrit();
@@ -431,13 +521,18 @@ function init() {
         case "Tests":
             prompt_Tests();
             break;
+        case "Questions":
+            prompt_Questions();
+            break;
         case "License":
             prompt_License();
-            break;
-        }
-    });
-    conclusion();
+            break;  
+    };
+    if (task_list_index == task_list.length) {
+        console.log("\n This concludes the inputs for the auto-generated README. Please see your final file at ./README.md\n")
+    }
+    task_list_index++;
 }
 
 // Function call to initialize app
-init();
+prompt_TOC();
